@@ -1,0 +1,342 @@
+##############################################################################
+#								             #
+#              S O U R C E   &   D E T E C T O R   S C R I P T               #  		
+#								             # 
+##############################################################################
+
+
+#=============================================================================
+#              V I S U A L I S A T I O N
+#=============================================================================
+
+/vis/open                                               VRML2FILE
+/vis/viewer/reset
+/vis/viewer/set/viewpointThetaPhi                       0 0
+/vis/viewer/zoom                                        5
+/vis/viewer/set/style                                   surface
+/vis/drawVolume
+/tracking/storeTrajectory                               1
+/vis/scene/endOfEventAction                             accumulate
+/vis/scene/add/trajectories
+/vis/viewer/update
+/vis/reviewKeptEvents
+
+/vis/modeling/trajectories/create/drawByParticleID
+/vis/modeling/trajectories/drawByParticleID-0/set      gamma red
+/vis/modeling/trajectories/create/drawByParticleID
+/vis/modeling/trajectories/drawByParticleID-1/set opticalphoton b
+
+#/vis/modeling/trajectories/create/drawByParticleID
+#/vis/modeling/trajectories/drawByParticleID-0/set gamma green
+#/vis/modeling/trajectories/create/drawByParticleID
+#/vis/modeling/trajectories/drawByParticleID-1/set electron blue
+#/vis/modeling/trajectories/create/drawByParticleID
+#/vis/modeling/trajectories/drawByParticleID-1/set opticalphoton red
+#/vis/disable
+
+#=============================================================================
+#              M A T E R I A L S   D A T A B A S E
+#=============================================================================
+/gate/geometry/setMaterialDatabase 				GateMaterials.db
+
+#===========================================================================
+#	G E O M E T R Y
+#===========================================================================
+
+#	W O R L D
+
+/gate/world/geometry/setXLength 				1000 mm
+/gate/world/geometry/setYLength 				1000 mm
+/gate/world/geometry/setZLength 				1000 mm
+/gate/world/setMaterial 					Air
+/gate/world/vis/forceWireframe	
+/gate/world/vis/setVisible 					1
+
+
+#       S Y S T E M   1   -  S C I N T I L L A T O R 
+
+/gate/world/daughters/name 					system_1
+/gate/world/daughters/systemType 				OpticalSystem
+/gate/world/daughters/insert 					tessellated
+/gate/system_1/placement/setTranslation 			0.0 0.0 0.0 mm
+/gate/system_1/geometry/setPathToSTLFile 			polygonPET_LaF3CePS_42mm.stl
+/gate/system_1/setMaterial					Air
+/gate/system_1/vis/forceWireframe
+/gate/system_1/vis/setColor 					white
+/gate/system_1/vis/setVisible					true
+
+/gate/system_1/daughters/name 					scint
+/gate/system_1/daughters/insert 				tessellated
+/gate/scint/placement/setTranslation 				0.0 0.0 0.0 mm
+/gate/scint/geometry/setPathToSTLFile 				polygonPET_LaF3CePS_42mm.stl
+/gate/scint/setMaterial						LaF3Ce_Polystyrene
+/gate/scint/vis/forceWireframe
+/gate/scint/vis/setColor 					blue
+/gate/scint/vis/setVisible					true
+
+#	S Y S T E M   2   -   S I P M   (O U T E R) 
+
+/gate/world/daughters/name					system_2
+/gate/world/daughters/systemType 				OpticalSystem
+/gate/world/daughters/insert					box
+/gate/system_2/placement/setTranslation           		279.207 0.0 0.0 mm
+/gate/system_2/placement/setRotationAxis        		0 0 1
+/gate/system_2/placement/setRotationAngle   			0.025335424625724138 rad 
+/gate/system_2/placement/setPhiOfTranslation 			0.025335424625724138 rad
+/gate/system_2/geometry/setXLength				2 mm
+/gate/system_2/geometry/setYLength				14 mm
+/gate/system_2/geometry/setZLength				14 mm
+/gate/system_2/setMaterial 					Air
+/gate/system_2/vis/forceWireframe
+/gate/system_2/vis/setColor 					white
+/gate/system_2/vis/setVisible					true
+
+/gate/system_2/daughters/name					Epoxy_1
+/gate/system_2/daughters/insert					box
+/gate/Epoxy_1/placement/setTranslation				-0.925 0.0 0.0 mm
+/gate/Epoxy_1/geometry/setXLength				0.15 mm
+/gate/Epoxy_1/geometry/setYLength				14 mm
+/gate/Epoxy_1/geometry/setZLength				14 mm
+/gate/Epoxy_1/setMaterial 					Epoxy
+/gate/Epoxy_1/vis/forceWireframe
+/gate/Epoxy_1/vis/setColor 					red
+
+/gate/system_2/daughters/name					Elec_1
+/gate/system_2/daughters/insert					box
+/gate/Elec_1/placement/setTranslation				0.075 0.0 0.0 mm
+/gate/Elec_1/geometry/setXLength				1.85 mm
+/gate/Elec_1/geometry/setYLength				14 mm
+/gate/Elec_1/geometry/setZLength				14 mm
+/gate/Elec_1/setMaterial 					Silicon
+/gate/Elec_1/vis/forceWireframe
+/gate/Elec_1/vis/setColor 					yellow
+
+#	Z   -   D I M E N S I O N   R E P E A T E R
+
+/gate/system_2/repeaters/insert					cubicArray
+/gate/system_2/cubicArray/setRepeatNumberX			1
+/gate/system_2/cubicArray/setRepeatNumberY			1
+/gate/system_2/cubicArray/setRepeatNumberZ			21
+/gate/system_2/cubicArray/setRepeatVector     			0. 0. 14.2 mm
+
+#	R I N G   R E P E A T E R
+
+/gate/system_2/repeaters/insert 				ring 
+/gate/system_2/ring/setRepeatNumber 				124
+
+#	S Y S T E M   3   -   S I P M   2   (I N N E R)
+
+/gate/world/daughters/name					system_3
+/gate/world/daughters/systemType 				OpticalSystem
+/gate/world/daughters/insert					box
+/gate/system_3/placement/setTranslation           		234.315 0.0 0.0 mm
+/gate/system_3/placement/setRotationAxis        		0 0 1
+/gate/system_3/placement/setRotationAngle   			0.030207621669132625 rad 
+/gate/system_3/placement/setPhiOfTranslation 			0.030207621669132625 rad 
+/gate/system_3/geometry/setXLength				2 mm
+/gate/system_3/geometry/setYLength				14 mm
+/gate/system_3/geometry/setZLength				14 mm
+/gate/system_3/setMaterial 					Air
+/gate/system_3/vis/forceWireframe
+/gate/system_3/vis/setColor 					white
+/gate/system_3/vis/setVisible					true
+
+/gate/system_3/daughters/name					Epoxy_2
+/gate/system_3/daughters/insert					box
+/gate/Epoxy_2/placement/setTranslation				0.925 0.0 0.0 mm
+/gate/Epoxy_2/geometry/setXLength				0.15 mm
+/gate/Epoxy_2/geometry/setYLength				14 mm
+/gate/Epoxy_2/geometry/setZLength				14 mm
+/gate/Epoxy_2/setMaterial 					Epoxy
+/gate/Epoxy_2/vis/forceWireframe
+/gate/Epoxy_2/vis/setColor 					red
+
+/gate/system_3/daughters/name					Elec_2
+/gate/system_3/daughters/insert					box
+/gate/Elec_2/placement/setTranslation				-0.075 0.0 0.0 mm
+/gate/Elec_2/geometry/setXLength				1.85 mm
+/gate/Elec_2/geometry/setYLength				14 mm
+/gate/Elec_2/geometry/setZLength				14 mm
+/gate/Elec_2/setMaterial 					Silicon
+/gate/Elec_2/vis/forceWireframe
+/gate/Elec_2/vis/setColor 					yellow
+
+#	Z   -   D I M E N S I O N   R E P E A T E R
+
+/gate/system_3/repeaters/insert					cubicArray
+/gate/system_3/cubicArray/setRepeatNumberX			1
+/gate/system_3/cubicArray/setRepeatNumberY			1
+/gate/system_3/cubicArray/setRepeatNumberZ			21
+/gate/system_3/cubicArray/setRepeatVector 			0. 0. 14.2 mm
+
+#	R I N G   R E P E A T E R
+
+/gate/system_3/repeaters/insert 				ring 
+/gate/system_3/ring/setRepeatNumber 				104
+
+/gate/systems/system_1/crystal/attach				scint
+/gate/systems/system_2/crystal/attach				Epoxy_1
+/gate/systems/system_3/crystal/attach				Epoxy_2
+
+#	A T T A C H   S E N S I T I V E   D E T E C T O R S
+
+/gate/scint/attachCrystalSD
+/gate/Epoxy_1/attachCrystalSD
+/gate/Epoxy_2/attachCrystalSD
+
+/gate/systems/OpticalSystem/describe
+
+
+
+#===========================================================================
+#	P H A N T O M
+#===========================================================================
+
+# 	P H A N T O M   G E O M E T R Y
+
+/gate/world/daughters/name 					phantom
+/gate/world/daughters/insert 					cylinder
+
+/gate/phantom/placement/setTranslation 				0. 0. 0. mm 
+/gate/phantom/geometry/setRmin   				0. mm
+/gate/phantom/geometry/setRmax   				234. mm
+# NOTE NOTE NOTE THIS IS THE FULL CYLINDER HEIGHT NOT HALF-HEIGHT - UNLIKE
+# THE SOURCE!! 
+/gate/phantom/geometry/setHeight   				400. mm
+/gate/phantom/setMaterial					Water
+/gate/phantom/vis/forceWireframe
+/gate/phantom/vis/setColor 					grey
+
+/gate/phantom/attachPhantomSD 
+
+#=============================================================================
+#	       P H Y S I C S
+#=============================================================================
+#/gate/physics/addPhysicsList 					LBE
+
+/gate/physics/addProcess OpticalAbsorption
+/gate/physics/addProcess OpticalRayleigh
+/gate/physics/addProcess OpticalBoundary
+/gate/physics/addProcess OpticalMie
+/gate/physics/addProcess OpticalWLS
+/gate/physics/addProcess Scintillation
+
+/gate/physics/addProcess PhotoElectric
+/gate/physics/processes/PhotoElectric/setModel StandardModel
+
+/gate/physics/addProcess Compton
+/gate/physics/processes/Compton/setModel StandardModel
+
+/gate/physics/addProcess RayleighScattering
+/gate/physics/processes/RayleighScattering/setModel PenelopeModel
+
+/gate/physics/addProcess ElectronIonisation
+/gate/physics/processes/ElectronIonisation/setModel StandardModel e-
+/gate/physics/processes/ElectronIonisation/setModel StandardModel e+
+
+/gate/physics/addProcess Bremsstrahlung
+/gate/physics/processes/Bremsstrahlung/setModel StandardModel e-
+/gate/physics/processes/Bremsstrahlung/setModel StandardModel e+
+
+/gate/physics/addProcess PositronAnnihilation
+
+/gate/physics/addProcess eMultipleScattering e+
+/gate/physics/addProcess eMultipleScattering e-
+
+#=============================================================================
+#	       I N I T I A L I Z E 
+#=============================================================================
+/gate/run/initialize
+
+#===========================================================================
+#       S U R F A C E S
+#===========================================================================
+
+/gate/Elec_1/surfaces/name                       		Epoxy1_to_Elec1
+/gate/Elec_1/surfaces/insert                     		Epoxy_1  
+/gate/Elec_1/surfaces/Epoxy1_to_Elec1/setSurface		perfect_apd
+
+/gate/Epoxy_1/surfaces/name                       		Elec1_to_Epoxy1
+/gate/Epoxy_1/surfaces/insert                     		Elec_1  
+/gate/Epoxy_1/surfaces/Elec1_to_Epoxy1/setSurface		perfect_apd
+
+/gate/Elec_2/surfaces/name                       		Epoxy2_to_Elec2
+/gate/Elec_2/surfaces/insert                     		Epoxy_2  
+/gate/Elec_2/surfaces/Epoxy2_to_Elec2/setSurface		perfect_apd
+
+/gate/Epoxy_2/surfaces/name                       		Elec2_to_Epoxy2
+/gate/Epoxy_2/surfaces/insert                     		Elec_2  
+/gate/Epoxy_2/surfaces/Elec2_to_Epoxy2/setSurface		perfect_apd
+
+#/gate/scint/surfaces/name                           		Air_to_scint
+#/gate/scint/surfaces/insert                         		system_1
+#/gate/scint/surfaces/Air_to_scint/setSurface  			blackpaint
+
+#/gate/system_1/surfaces/name                     		Scint_to_air
+#/gate/system_1/surfaces/insert                   		scint
+#/gate/system_1/surfaces/Scint_to_air/setSurface		blackpaint
+
+#===========================================================================
+#	D I G I T I Z E R
+#===========================================================================
+
+/gate/digitizer/Singles/insert 					adder
+/gate/digitizer/Singles/insert 					readout
+
+#===========================================================================
+#	S O U R C E
+#===========================================================================
+
+/gate/source/addSource 						F18LineSource
+/gate/source/F18LineSource/setActivity 				100000. becquerel
+
+/gate/source/F18LineSource/gps/particle 			e+
+/gate/source/F18LineSource/setForcedUnstableFlag 		true
+/gate/source/F18LineSource/setForcedHalfLife 			6586.2 s
+/gate/source/F18LineSource/gps/energytype 			Fluor18
+/gate/source/F18LineSource/gps/type 				Volume
+/gate/source/F18LineSource/gps/shape 				Cylinder
+/gate/source/F18LineSource/gps/radius 				234 mm
+# NOTE NOTE NOTE - THIS IS HALF HEIGHT - PHANTOM IS FULL HEIGHT
+/gate/source/F18LineSource/gps/halfz 				200.0 mm
+/gate/source/F18LineSource/gps/angtype 				iso
+/gate/source/F18LineSource/gps/centre 				0. 0. 0. mm
+
+/gate/source/F18LineSource/visualize 				1000 red 1
+
+#=============================================================================
+#	       D I G I T I Z E R
+#=============================================================================
+/gate/digitizer/Singles/insert 					opticaladder 
+/gate/digitizer/Singles/insert 					readout 
+# for pixels:
+/gate/digitizer/Singles/readout/setDepth            	  	2
+# for crystal:
+/gate/digitizer/Singles/readout/setDepth             	 	1
+
+
+/gate/source/list
+
+#=============================================================================
+#	       O U T P U T
+#=============================================================================
+/gate/output/root/enable
+/gate/output/root/setFileName               			output/newpolypet_21
+/gate/output/root/setRootHitFlag          			1
+/gate/output/root/setRootSinglesFlag      			1
+/gate/output/root/setRootOpticalFlag      			1
+
+/gate/output/analysis/enable
+/gate/output/fastanalysis/enable
+
+
+#=============================================================================
+#	       S T A R T   A C Q U I S I T I O N
+#=============================================================================
+/gate/random/setEngineSeed 					auto
+
+/vis/disable
+
+#/gate/application/setTotalNumberOfPrimaries 			100000
+
+/gate/application/startDAQ
