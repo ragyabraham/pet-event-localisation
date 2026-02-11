@@ -1,0 +1,9 @@
+torch
+torchvision
+timm
+numpy
+pandas
+python-dotenv
+tensorboard
+tqdm
+seaborn
